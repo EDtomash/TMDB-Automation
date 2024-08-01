@@ -6,5 +6,5 @@ import lombok.Data;
 @Data
 @Builder
 public class RequestToken {
-    public String request_token;
+    private String request_token;
 }

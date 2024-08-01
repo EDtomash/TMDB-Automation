@@ -18,8 +18,7 @@ public class LoginAndAuthenticationUi {
 
     public LoginAndAuthenticationUi performLogin(String userName, String userPassword) {
         clickLoginButton();
-        enterUsername(userName);
-        enterPassword(userPassword);
+        enterCredentials(userName, userPassword);
         submitLoginForm();
         clickApproveButton();
         verifyAuthenticationGranted();
@@ -28,6 +27,12 @@ public class LoginAndAuthenticationUi {
 
     private LoginAndAuthenticationUi clickLoginButton() {
         LOGIN_BUTTON.shouldBe(visible).click();
+        return this;
+    }
+
+    private LoginAndAuthenticationUi enterCredentials(String userName, String userPassword) {
+        enterUsername(userName);
+        enterPassword(userPassword);
         return this;
     }
 

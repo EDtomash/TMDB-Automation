@@ -5,7 +5,6 @@ import com.tmdb.pojo.RequestToken;
 import com.tmdb.utils.DataLoader;
 import com.tmdb.webelements.LoginAndAuthenticationUi;
 import io.restassured.response.Response;
-import org.testng.annotations.Test;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -23,11 +22,11 @@ public class TokenManager {
     private static LocalDateTime tokenAcquiredTime;
     private static final long TOKEN_LIFETIME_MINUTES = 60;
 
-    @Test
-    public void getSessionId() {
+    public String  getSessionId() {
         loginAndApprovePermission();
         Response response = postRequest( AUTHENTICATION + "/session/new", requestTokenBuilder());
         sessionId = response.path("session_id");
+        return sessionId;
     }
 
     private String getRequestToken() {
