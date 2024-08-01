@@ -22,20 +22,30 @@ public class TokenManager {
     private static LocalDateTime tokenAcquiredTime;
     private static final long TOKEN_LIFETIME_MINUTES = 60;
 
-    public String  getSessionId() {
-        loginAndApprovePermission();
-        Response response = postRequest( AUTHENTICATION + "/session/new", requestTokenBuilder());
-        sessionId = response.path("session_id");
+    public String getSessionId() {
+        if (sessionId == null || isTokenExpired()) {
+            loginAndApprovePermission();
+            sessionId = fetchNewSessionId();
+        }
         return sessionId;
+    }
+
+    private String fetchNewSessionId() {
+        Response response = postRequest(AUTHENTICATION + "/session/new", buildRequestToken());
+        return response.path("session_id");
     }
 
     private String getRequestToken() {
         if (requestToken == null || isTokenExpired()) {
-            Response response = getRequest(AUTHENTICATION + TOKEN + "/new");
-            requestToken = response.path("request_token");
+            requestToken = fetchNewRequestToken();
             tokenAcquiredTime = LocalDateTime.now();
         }
         return  requestToken;
+    }
+
+    private String fetchNewRequestToken() {
+        Response response = getRequest(AUTHENTICATION + TOKEN + "/new");
+        return response.path("request_token");
     }
 
     private boolean isTokenExpired() {
@@ -53,7 +63,7 @@ public class TokenManager {
         closeWebDriver();
     }
 
-    private RequestToken requestTokenBuilder() {
+    private RequestToken buildRequestToken() {
         return RequestToken.builder()
                 .request_token(requestToken)
                 .build();
