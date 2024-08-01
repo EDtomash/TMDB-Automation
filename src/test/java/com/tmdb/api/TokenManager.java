@@ -1,7 +1,7 @@
 package com.tmdb.api;
 
 import com.codeborne.selenide.Configuration;
-import com.tmdb.pojo.RequestToken;
+import com.tmdb.pojo.requesttoken.RequestToken;
 import com.tmdb.utils.DataLoader;
 import com.tmdb.webelements.LoginAndAuthenticationUi;
 import io.restassured.response.Response;
@@ -11,8 +11,7 @@ import java.time.temporal.ChronoUnit;
 
 import static com.codeborne.selenide.Selenide.closeWebDriver;
 import static com.codeborne.selenide.Selenide.open;
-import static com.tmdb.api.CommonRequestActions.getRequest;
-import static com.tmdb.api.CommonRequestActions.postRequest;
+import static com.tmdb.api.CommonRequestActions.*;
 import static com.tmdb.api.Routes.*;
 import static com.tmdb.api.Routes.TOKEN;
 
@@ -22,7 +21,7 @@ public class TokenManager {
     private static LocalDateTime tokenAcquiredTime;
     private static final long TOKEN_LIFETIME_MINUTES = 60;
 
-    public String getSessionId() {
+    public static String getSessionId() {
         if (sessionId == null || isTokenExpired()) {
             loginAndApprovePermission();
             sessionId = fetchNewSessionId();
@@ -30,12 +29,12 @@ public class TokenManager {
         return sessionId;
     }
 
-    private String fetchNewSessionId() {
-        Response response = postRequest(AUTHENTICATION + "/session/new", buildRequestToken());
+    private static String fetchNewSessionId() {
+        Response response = postTokenRequest(AUTHENTICATION + "/session/new", buildRequestToken());
         return response.path("session_id");
     }
 
-    private String getRequestToken() {
+    private static String getRequestToken() {
         if (requestToken == null || isTokenExpired()) {
             requestToken = fetchNewRequestToken();
             tokenAcquiredTime = LocalDateTime.now();
@@ -43,27 +42,26 @@ public class TokenManager {
         return  requestToken;
     }
 
-    private String fetchNewRequestToken() {
-        Response response = getRequest(AUTHENTICATION + TOKEN + "/new");
+    private static String fetchNewRequestToken() {
+        Response response = getTokenRequest(AUTHENTICATION + TOKEN + "/new");
         return response.path("request_token");
     }
 
-    private boolean isTokenExpired() {
+    private static boolean isTokenExpired() {
         return  tokenAcquiredTime == null ||
                 ChronoUnit.MINUTES.between(tokenAcquiredTime, LocalDateTime.now()) >= TOKEN_LIFETIME_MINUTES;
     }
 
-    private void loginAndApprovePermission() {
+    private static void loginAndApprovePermission() {
         Configuration.headless = true;
         open(TMDB_REQUEST_TOKEN + AUTHENTICATE + "/" + getRequestToken());
-
         new LoginAndAuthenticationUi()
-                .performLogin(DataLoader.getInstance().getUserLogin(), DataLoader.getInstance().getUserPassword());
-
+                .performLogin(DataLoader.getInstance().getUserLogin(),
+                        DataLoader.getInstance().getUserPassword());
         closeWebDriver();
     }
 
-    private RequestToken buildRequestToken() {
+    private static RequestToken buildRequestToken() {
         return RequestToken.builder()
                 .request_token(requestToken)
                 .build();

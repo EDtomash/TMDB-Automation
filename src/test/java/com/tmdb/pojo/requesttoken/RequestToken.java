@@ -1,4 +1,4 @@
-package com.tmdb.pojo;
+package com.tmdb.pojo.requesttoken;
 
 import lombok.Builder;
 import lombok.Data;

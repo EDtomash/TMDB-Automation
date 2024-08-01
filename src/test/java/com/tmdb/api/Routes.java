@@ -8,5 +8,7 @@ public class Routes {
     public static final String AUTHENTICATION = "/authentication";
     public static final String TOKEN = "/token";
     public static final String ACCOUNT = "/account";
+    public static final String FAVORITE = "/favorite";
+    public static final String MOVIES = "/movies";
 
 }

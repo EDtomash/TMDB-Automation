@@ -28,4 +28,10 @@ public class DataLoader {
         if (prop != null) return prop;
         else throw new RuntimeException("property user_password is not specified in the data.properties file");
     }
+
+    public String getUserId() {
+        String prop = properties.getProperty("account_id");
+        if (prop != null) return prop;
+        else throw new RuntimeException("property account_id is not specified in the data.properties file");
+    }
 }

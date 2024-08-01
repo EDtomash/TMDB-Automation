@@ -28,4 +28,19 @@ public class SpecBuilder {
                 .log(LogDetail.ALL)
                 .build();
     }
+
+    public static RequestSpecification getTokenRequestSpec() {
+        return new RequestSpecBuilder()
+                .setBaseUri(TMDB_BASE_URL)
+                .setBasePath(BASE_PATH)
+                .addHeader("Authorization", "Bearer " + ConfigLoader.getInstance().getBearerToken())
+                .addHeader("Accept", "application/json")
+                .setContentType(ContentType.JSON)
+                .build();
+    }
+
+    public static ResponseSpecification getTokenResponseSpec() {
+        return new ResponseSpecBuilder()
+                .build();
+    }
 }
