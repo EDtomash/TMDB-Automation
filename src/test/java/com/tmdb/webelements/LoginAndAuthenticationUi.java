@@ -9,39 +9,49 @@ import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$x;
 
 public class LoginAndAuthenticationUi {
-    public static final SelenideElement LOGIN_BUTTON = $x("//div[@class='button']/a[@href='/login']");
-    public static final SelenideElement USERNAME_FIELD = $(By.id("username"));
-    public static final SelenideElement PASSWORD_FIELD = $(By.id("password"));
-    public static final SelenideElement SUBMIT_BTN = $(By.id("login_button"));
-    public static final SelenideElement APPROVE_BTN = $(By.id("allow_authentication"));
-    public static final SelenideElement AUTHENTICATION_GRANTED_MESSAGE = $x("//h2[@class='title']");
+    private static final SelenideElement LOGIN_BUTTON = $x("//div[@class='button']/a[@href='/login']");
+    private static final SelenideElement USERNAME_FIELD = $(By.id("username"));
+    private static final SelenideElement PASSWORD_FIELD = $(By.id("password"));
+    private static final SelenideElement SUBMIT_BTN = $(By.id("login_button"));
+    private static final SelenideElement APPROVE_BTN = $(By.id("allow_authentication"));
+    private static final SelenideElement AUTHENTICATION_GRANTED_MESSAGE = $x("//h2[@class='title']");
 
-    public LoginAndAuthenticationUi clickLoginButton() {
+    public LoginAndAuthenticationUi performLogin(String userName, String userPassword) {
+        clickLoginButton();
+        enterUsername(userName);
+        enterPassword(userPassword);
+        submitLoginForm();
+        clickApproveButton();
+        verifyAuthenticationGranted();
+        return this;
+    }
+
+    private LoginAndAuthenticationUi clickLoginButton() {
         LOGIN_BUTTON.shouldBe(visible).click();
         return this;
     }
 
-    public LoginAndAuthenticationUi enterUsername(String userName) {
+    private LoginAndAuthenticationUi enterUsername(String userName) {
         USERNAME_FIELD.shouldBe(visible).sendKeys(userName);
         return this;
     }
 
-    public LoginAndAuthenticationUi enterPassword(String userPassword) {
+    private LoginAndAuthenticationUi enterPassword(String userPassword) {
         PASSWORD_FIELD.shouldBe(visible).sendKeys(userPassword);
         return this;
     }
 
-    public LoginAndAuthenticationUi submitLoginForm() {
+    private LoginAndAuthenticationUi submitLoginForm() {
         SUBMIT_BTN.shouldBe(visible).submit();
         return this;
     }
 
-    public LoginAndAuthenticationUi clickApproveButton() {
+    private LoginAndAuthenticationUi clickApproveButton() {
         APPROVE_BTN.shouldBe(visible).click();
         return this;
     }
 
-    public void verifyAuthenticationGranted() {
+    private void verifyAuthenticationGranted() {
         AUTHENTICATION_GRANTED_MESSAGE.shouldBe(visible).shouldHave(text("Authentication Granted"));
     }
 }

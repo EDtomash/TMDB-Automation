@@ -17,9 +17,9 @@ public class ConfigLoader {
         return configLoader;
     }
 
-    public String getApiKey() {
-        String prop = properties.getProperty("api_key");
+    public String getBearerToken() {
+        String prop = properties.getProperty("Bearer");
         if(prop != null) return prop;
-        else throw new RuntimeException("property api_key is not specified in the config.properties file");
+        else throw new RuntimeException("property Bearer is not specified in the config.properties file");
     }
 }

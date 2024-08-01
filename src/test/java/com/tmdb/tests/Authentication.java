@@ -12,9 +12,9 @@ public class Authentication {
     @Test
     public void validateApiKey() {
         given()
-                .baseUri(TMDB_API_URL)
+                .baseUri(TMDB_BASE_URL)
                 .basePath(BASE_PATH)
-                .queryParam("api_key", ConfigLoader.getInstance().getApiKey())
+                .queryParam("api_key", ConfigLoader.getInstance().getBearerToken())
                 .log().all()
                 .when()
                 .get(AUTHENTICATION)
