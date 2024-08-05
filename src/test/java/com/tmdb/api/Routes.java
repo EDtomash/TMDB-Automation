@@ -9,6 +9,13 @@ public class Routes {
     public static final String TOKEN = "/token";
     public static final String ACCOUNT = "/account";
     public static final String FAVORITE = "/favorite";
+    public static final String MOVIE = "/movie";
     public static final String MOVIES = "/movies";
+    public static final String WATCHLIST = "/watchlist";
+    public static final String RATING = "/rating";
+    public static final String LIST = "/list";
+    public static final String ITEM_STATUS = "/item_status";
+    public static final String REMOVE_ITEM = "/remove_item";
+
 
 }

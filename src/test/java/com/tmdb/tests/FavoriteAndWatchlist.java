@@ -1,6 +1,7 @@
 package com.tmdb.tests;
 
 import com.tmdb.pojo.favoritemovie.FavoriteMovie;
+import com.tmdb.pojo.watchlistmovie.WachlistMovie;
 import com.tmdb.utils.DataLoader;
 import io.restassured.response.Response;
 import org.testng.annotations.BeforeClass;
@@ -17,7 +18,8 @@ import static org.testng.Assert.assertNotNull;
 
 public class FavoriteAndWatchlist {
     public String sessionId;
-    public int movieId = 550;
+    public int movieIdForFavorite = 550;
+    public int movieIdForWatchlist = 68;
 
     @BeforeClass
     public void setup() {
@@ -37,7 +39,7 @@ public class FavoriteAndWatchlist {
 
     @Test
     public void addingMovieToFavorite() {
-        FavoriteMovie favoriteMovie = favoriteMovieBuilder("movie", movieId, true);
+        FavoriteMovie favoriteMovie = favoriteMovieBuilder("movie", movieIdForFavorite, true);
         Response response = postRequest(ACCOUNT + "/" + DataLoader.getInstance().getUserId() + FAVORITE, sessionId, favoriteMovie);
 
         assertThat(response.statusCode(), equalTo(201));
@@ -49,14 +51,41 @@ public class FavoriteAndWatchlist {
     public void getListWithFavoriteMovies() {
         Response response = getRequest(ACCOUNT + "/" + DataLoader.getInstance().getUserId() + FAVORITE + MOVIES, sessionId);
         assertThat(response.statusCode(), equalTo(200));
-        assertThat(response.path("results.id"), hasItem(movieId));
+        assertThat(response.path("results.id"), hasItem(movieIdForFavorite));
     }
 
-    public FavoriteMovie favoriteMovieBuilder(String mediaType, int mediaId, boolean favorite) {
+    @Test
+    public void addingMovieToWatchlist() {
+        WachlistMovie wachlistMovie = watchlistMovieBuilder("movie", movieIdForWatchlist, true);
+        Response response = postRequest(ACCOUNT + "/" + DataLoader.getInstance().getUserId() + WATCHLIST, sessionId, wachlistMovie);
+
+        assertThat(response.statusCode(), equalTo(201));
+        assertThat(response.path("success"), equalTo(true));
+        assertThat(response.path("status_message"), equalTo("The item/record was updated successfully."));
+    }
+
+    @Test
+    public void getListOfWatchlistMovies() {
+        Response response = getRequest(ACCOUNT + "/" + DataLoader.getInstance().getUserId() + WATCHLIST + MOVIES, sessionId);
+        assertThat(response.statusCode(), equalTo(200));
+        assertThat(response.path("results.id"), hasItem(movieIdForWatchlist));
+    }
+
+
+
+    public FavoriteMovie favoriteMovieBuilder(String mediaType, int movieIdForFavorite, boolean favorite) {
        return  FavoriteMovie.builder()
                 .media_type(mediaType)
-                .media_id(mediaId)
+                .media_id(movieIdForFavorite)
                 .favorite(favorite)
+                .build();
+    }
+
+    public WachlistMovie watchlistMovieBuilder(String mediaType, int movieIdForWatchlist, boolean favorite) {
+        return  WachlistMovie.builder()
+                .media_type(mediaType)
+                .media_id(movieIdForWatchlist)
+                .watchlist(favorite)
                 .build();
     }
 }

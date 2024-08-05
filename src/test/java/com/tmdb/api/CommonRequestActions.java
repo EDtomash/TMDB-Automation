@@ -1,5 +1,6 @@
 package com.tmdb.api;
 
+import com.tmdb.pojo.movierating.MovieRating;
 import com.tmdb.pojo.requesttoken.RequestToken;
 import io.restassured.response.Response;
 
@@ -19,10 +20,22 @@ public class CommonRequestActions {
               .response();
     }
 
-    public static Response postRequest(String path, String sessionId, Object favoriteMovie) {
+    public static Response getWithQueryRequest(String path, String sessionId, String queryName, String queryParam) {
         return  given().spec(getRequestSpec())
                 .queryParam("session_id", sessionId)
-                .body(favoriteMovie)
+                .queryParam(queryName, queryParam)
+                .when()
+                .get(path)
+                .then()
+                .spec(getResponseSpec())
+                .extract()
+                .response();
+    }
+
+    public static Response postRequest(String path, String sessionId, Object movie) {
+        return  given().spec(getRequestSpec())
+                .queryParam("session_id", sessionId)
+                .body(movie)
                 .when()
                 .post(path)
                 .then()
@@ -48,6 +61,17 @@ public class CommonRequestActions {
                 .post(path)
                 .then()
                 .spec(getTokenResponseSpec())
+                .extract()
+                .response();
+    }
+
+    public static Response deleteRequest(String path, String sessionId) {
+        return  given().spec(getRequestSpec())
+                .queryParam("session_id", sessionId)
+                .when()
+                .delete(path)
+                .then()
+                .spec(getResponseSpec())
                 .extract()
                 .response();
     }
