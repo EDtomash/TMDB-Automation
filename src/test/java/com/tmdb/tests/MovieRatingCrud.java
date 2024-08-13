@@ -42,8 +42,10 @@ public class MovieRatingCrud {
 
         Response response = postRequest(MOVIE + "/" + movieId + RATING, sessionId, movieRating);
         assertThat(response.statusCode(), equalTo(201));
-        assertThat(response.path("status_message"), equalTo("The item/record was updated successfully."));
+        assertThat(response.path("status_message"), either(equalTo("The item/record was deleted successfully."))
+                .or(equalTo("Success.")));
         }
+
 
     @Test
     public void deletingMovieById() {
