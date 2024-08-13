@@ -1,0 +1,11 @@
+<?xml version = "1.0"encoding = "UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name = "Smoke Tests">
+    <test name = "Test run">
+        <classes>
+            <class name = "com.tmdb.tests.FavoriteAndWatchlist"/>
+            <class name = "com.tmdb.tests.MovieRatingCrud"/>
+            <class name = "com.tmdb.tests.UserMoviesList"/>
+        </classes>
+    </test>
+</suite>

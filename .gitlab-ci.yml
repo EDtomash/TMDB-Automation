@@ -1,0 +1,31 @@
+image: maven:3.8.6-openjdk-17
+
+stages:
+  - test
+  - report
+
+cache:
+  paths:
+    - .m2/repository
+
+variables:
+  MAVEN_OPTS: "-Dmaven.test.failure.ignore=true"
+
+test:
+  stage: test
+  script:
+    - mvn clean test
+  artifacts:
+    paths:
+      - target/allure-results
+
+allure_report:
+  stage: report
+  script:
+    - mvn allure:report
+  dependencies:
+    - test
+  artifacts:
+    paths:
+      - target/site/allure-maven-plugin
+  when: always

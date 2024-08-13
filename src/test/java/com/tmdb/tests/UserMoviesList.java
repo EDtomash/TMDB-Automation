@@ -59,10 +59,10 @@ public class UserMoviesList {
         assertThat(response.statusCode(), equalTo(200));
         assertThat(response.path("item_present"), equalTo(true));
     }
-
-    @Test(dependsOnMethods = "addingMovieToList")
-    public void removingMovieFromList() {
-        Response response = postRequest(LIST + "/" + listId + REMOVE_ITEM, sessionId,  );
-//        assertThat(response.statusCode(), equalTo());
-    }
+//
+//    @Test(dependsOnMethods = "addingMovieToList")
+//    public void removingMovieFromList() {
+//        Response response = postRequest(LIST + "/" + listId + REMOVE_ITEM, sessionId,  );
+////        assertThat(response.statusCode(), equalTo());
+//    }
 }

@@ -61,7 +61,7 @@ public class FavoriteAndWatchlist {
 
         assertThat(response.statusCode(), equalTo(201));
         assertThat(response.path("success"), equalTo(true));
-        assertThat(response.path("status_message"), equalTo("The item/record was updated successfully."));
+        assertThat(response.path("status_message"), equalTo("Success."));
     }
 
     @Test

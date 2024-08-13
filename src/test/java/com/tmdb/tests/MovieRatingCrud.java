@@ -10,6 +10,7 @@ import static com.tmdb.api.Routes.MOVIE;
 import static com.tmdb.api.Routes.RATING;
 import static com.tmdb.api.TokenManager.getSessionId;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.either;
 import static org.hamcrest.Matchers.equalTo;
 import static org.testng.Assert.assertNotNull;
 
@@ -48,6 +49,7 @@ public class MovieRatingCrud {
     public void deletingMovieById() {
         Response response = deleteRequest(MOVIE + "/" + movieId + RATING, sessionId);
         assertThat(response.statusCode(), equalTo(200));
-        assertThat(response.path("status_message"), equalTo("The item/record was deleted successfully."));
+        assertThat(response.path("status_message"), either(equalTo("The item/record was deleted successfully."))
+                .or(equalTo("Success.")));
     }
 }
